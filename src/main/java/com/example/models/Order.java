@@ -38,6 +38,7 @@ public class Order {
         return order_lines;
     }
 
+    //Order Lines remain static
     private static List<ObjectNode> createOrderLines() { 
         ObjectMapper objectMapper = new ObjectMapper();
 

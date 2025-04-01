@@ -29,6 +29,7 @@ public class Main {
     @SuppressWarnings("ConvertToTryWithResources")
     public static void main(String[] args) throws IOException, InterruptedException {
         boolean found = false;
+        // Repeat the prompt until a valid file is found
         while (!found) {
             Scanner filenameInput = new Scanner(System.in);
             System.out.print("Enter Filename: ");
@@ -49,6 +50,7 @@ public class Main {
 
                     String[] nextLine;
 
+                    // Basically a for each loop for each line in the CSV
                     while ((nextLine = reader.readNext()) != null) {
                         String name = nextLine[0];
                         String address1 = nextLine[1];
@@ -121,7 +123,9 @@ public class Main {
                 .toList();
 
         if (addressLines.size() < 2) {
-            throw new IllegalArgumentException("At least two address lines are required.");
+            // If there are less than 2 address lines, throw an exception
+            throw new IllegalArgumentException("At least two address lines are required. Order details: " +
+                    "Name: " + person.getName() + ", Postal Code: " + person.getPostalCode() + ", Address Lines: " + addressLines);
         }
 
         String namePart = person.getName().replace(" ", "");
@@ -170,7 +174,7 @@ public class Main {
             } else {
                 Map<String, Object> responseBody = objectMapper.readValue(response.body(), Map.class);
 
-                // If order was successful, output details
+                // If order was successful, output details and return true
                 if (response.statusCode() <= 299) {
                     System.out.println("Order name: " + order.getPerson().getName());
                     System.out.println("Order number: " + responseBody.get("order_number"));
