@@ -21,6 +21,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 
+import io.github.cdimascio.dotenv.Dotenv;
+
 public class Main {
 
     // Storing token globally
@@ -83,13 +85,17 @@ public class Main {
 
     public static String getToken() throws JsonProcessingException, IOException, InterruptedException {
 
+        Dotenv dotenv = Dotenv.load();
+        // Fetching email and password from .env file
+        String email = dotenv.get("EMAIL");
+        String password = dotenv.get("PASSWORD");
+
         // If token already exists, use that and don't fetch a new one
         if (authToken != null) {
             return authToken;
         }
 
-        // These should likely go in .env files
-        LoginBody loginBody = new LoginBody("testapi15@novatech.co.uk", "hFsRLqDU!DxmwevX3s6*dSLq");
+        LoginBody loginBody = new LoginBody(email, password);
         ObjectMapper objectMapper = new ObjectMapper();
 
         String body = objectMapper.writeValueAsString(loginBody);
